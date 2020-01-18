@@ -21,7 +21,7 @@ class UsersController < ApplicationController
   get '/users/:id/edit' do
     @user = User.find(params[:id])
     @retailer = Retailer.all
-    erb: '/users/edit'
+    erb :'/users/edit'
   end
 
   get '/users/:id' do
