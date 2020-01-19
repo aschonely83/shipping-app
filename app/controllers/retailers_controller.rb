@@ -1,81 +1,60 @@
 class RetailersController < ApplicationController
   
+  #index
   get '/retailers' do
-    if logged_in?  
-      @retailers = Retailer.all 
-      erb :'/retailers/index'
-    else
-      erb :'users/login'
-    end
+    error_message  
+    @retailers = Retailer.all 
+    erb :'/retailers/index'
   end
-   
-  get 'retailers/new' do
-    if logged_in?
-      erb :'/retailers/new'
-    else
-      erb :'users/login'
-    end
-  end
-
+  
+  #create retailer
   post '/retailers' do
-    if params.value.any? {|value| value == ""} 
-      erb :'retailers/new'
-    else
-      user = User.find(session[:user_id])
-      @retailers = Retailer.create(name: params[:name], boxes: params[:boxes], user_id: user.id)
+    error_message
+    user = User.find(session[:user_id])
+     @retailers = Retailer.create(name: params[:name], boxes: params[:boxes], user_id: user.id)
     redirect to "retailer/#{@retailer.user_id}"
-    end
+  end
+  
+  #new
+  get 'retailers/new' do
+    error_message
+    erb :'/retailers/new'
   end
 
+  #show
   get '/retailers/:id' do
-    if logged_in?
-      @retailers = Retailer.find_by(params[:user_id])
-      erb :'/retailers/show'
-    else
-      erb :'users/login'
-    end
-  end
-
-  get '/retailers/:id/edit' do
-    if logged_in?
-      @retailers = Retailer.find(params[id])
-      if @retailers.user_id == session[:user_id]
-       erb :'/retailers/edit'
-      else
-        erb :'retailers'  
-      end
-    else
-      erb :'users/login'
-    end
-  end
-
-  patch '/retailers/:id' do
-    if params.values.any? {|value| value == ""}
-      @retailers = Retailer.find(params[:id])
-      erb :'retailers/edit'
-      redirect to "/retailers/#{params[id]/edit}"
-    else
-      @retailers = Retailer.find(params[:id])
-      @retailers.name = params[:name]
-      @retailers.boxes = params[:boxes]
-      @retailers.user_id = params[:user_id]
-      @retailers.save
-      redirect to "/retailers/#{@retailer.id}"
-    end
-  end
-
-  delete '/retailers/:id/delete' do
+    error_message
     @retailers = Retailer.find(params[:id])
-    if session[:user_id]
-      @retailers = Retailer.find(params[:id])
-      if retailers.user_id == session[:user_id] 
-        @retailers.delete
-        redirect to '/retailers'
-      else
-        redirect to '/retailers'  
-      end
+    erb :'/retailers/show.'
+  end
+
+  #edit
+  get '/retailers/:id/edit' do
+    error_message
+    @retailers = Retailers.find(params[:id])
+    erb :'/retailers/'
+  end
+
+  #patch
+  patch '/retailers/:id' do
+    error_message
+    @retailers = Retailer.find_by_id(params[:id])
+    redirect '/retailers' unless @retailers
+    if @retailers.update(name: params[:name],boxes: params[:boxes])
+    redirect '/retailers/#{@retailers[:id]}'
     else
-      redirect to '/login'
+      flash[:error] = "Retailer couldn't be updated"
+      erb :'/vehicles/edit'
+    end
+  end
+
+  #delete
+  delete '/retailers/:id/delete' do
+    error_message
+    @retailers = Retailer.find(params[:id])
+    redirect '/retailers' unless @retailers
+    if @retailers.destroy
+      redirect '/retailers
     end
   end
 end

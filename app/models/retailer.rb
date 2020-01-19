@@ -1,4 +1,5 @@
 class Retailer < ActiveRecord::Base
-  validates_presence_of :name, :boxes
-  belongs_to :users
+    belongs_to :users
+    has_many :names
+    has_many :boxes
 end
