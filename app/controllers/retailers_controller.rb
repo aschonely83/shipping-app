@@ -22,14 +22,14 @@ class RetailersController < ApplicationController
       erb :'retailers/new'
     else
       user = User.find(session[:user_id])
-      @retailer = Retailer.create(name: params[:name], boxes: params[:boxes], user_id: user.id)
-    redirect to "retailer/#{@retailer.id}"
+      @retailers = Retailer.create(name: params[:name], boxes: params[:boxes], user_id: user.id)
+    redirect to "retailer/#{@retailer.user_id}"
     end
   end
 
   get '/retailers/:id' do
     if logged_in?
-      @retailer = Retailer.find(params[:id])
+      @retailers = Retailer.find_by(params[:user_id])
       erb :'/retailers/show'
     else
       erb :'users/login'
@@ -38,8 +38,8 @@ class RetailersController < ApplicationController
 
   get '/retailers/:id/edit' do
     if logged_in?
-      @retailer = Retailer.find(params[:id])
-      if @retailer.user_id == session[:user_id]
+      @retailers = Retailer.find(params[id])
+      if @retailers.user_id == session[:user_id]
        erb :'/retailers/edit'
       else
         erb :'retailers'  
@@ -51,24 +51,25 @@ class RetailersController < ApplicationController
 
   patch '/retailers/:id' do
     if params.values.any? {|value| value == ""}
-      @retailer = Retailer.find(params[:id])
+      @retailers = Retailer.find(params[:id])
       erb :'retailers/edit'
       redirect to "/retailers/#{params[id]/edit}"
     else
-      @retailer = Retailer.find(params[:id])
-      @retailer.name = params[:name]
-      @retailer.boxes = params[:boxes]
-      @retailer.save
+      @retailers = Retailer.find(params[:id])
+      @retailers.name = params[:name]
+      @retailers.boxes = params[:boxes]
+      @retailers.user_id = params[:user_id]
+      @retailers.save
       redirect to "/retailers/#{@retailer.id}"
     end
   end
 
   delete '/retailers/:id/delete' do
-    @retailer = Retailer.find(params[:id])
+    @retailers = Retailer.find(params[:id])
     if session[:user_id]
-      @retailer = Retailer.find(params[:id])
-      if retailer.user_id == session[:user_id] 
-        @retailer.delete
+      @retailers = Retailer.find(params[:id])
+      if retailers.user_id == session[:user_id] 
+        @retailers.delete
         redirect to '/retailers'
       else
         redirect to '/retailers'  
