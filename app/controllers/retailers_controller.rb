@@ -16,7 +16,7 @@ class RetailersController < ApplicationController
   #create retailer
   post '/retailers' do
     error_message
-    @retailers = current_user.retailers.create(name: params[:name], boxes: params[:boxes], user_id: params[:user_id])
+    @retailers = current_user.retailers.create(:name => params[:name], :boxes => params[:boxes])
     redirect to '/retailers/#{@retailers.id}'
   end
 
