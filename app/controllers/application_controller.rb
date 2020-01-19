@@ -1,14 +1,11 @@
 require './config/environment'
 
 class ApplicationController < Sinatra::Base
+  register Sinatra::ActiveRecordExtension
+  set :session_secret, "shipping_tracker_secret"
+  set :views, Proc.new { File.join(root, "../views/") }
+  register Sinatra::Flash
 
-  configure do
-    set :public_folder, 'public'
-    set :views, 'app/views'
-    enable :sessions
-    set :session_secret, "shipping_security"
-    register Sinatra::Flash
-  end
 
   get '/' do
     erb :welcome
