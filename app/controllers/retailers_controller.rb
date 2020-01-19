@@ -21,7 +21,7 @@ class RetailersController < ApplicationController
     if params.value.any? {|value| value == ""} 
       erb :'retailers/new'
     else
-      user = User.find(session[:user_id])
+      users = User.find(session[:user_id])
       @retailers = Retailer.create(name: params[:name], boxes: params[:boxes], user_id: user.id)
     redirect to "retailer/#{@retailer.id}"
     end
@@ -29,7 +29,7 @@ class RetailersController < ApplicationController
 
   get '/retailers/:id' do
     if logged_in?
-      @retailers = Retailer.find(params[:id])
+      @retailers = Retailer.find_by_id(params[:id])
       erb :'/retailers/show'
     else
       erb :'users/login'
