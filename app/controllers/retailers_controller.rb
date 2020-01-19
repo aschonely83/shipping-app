@@ -1,55 +1,80 @@
 class RetailersController < ApplicationController
   
-  #index
   get '/retailers' do
-    error_message
-    @retailers = Retailer.all
-    erb :'/retailers/index'
+    if logged_in?  
+      @retailers = Retailer.all 
+      erb :'/retailers/index'
+    else
+      erb :'users/login'
+    end
+  end
+   
+  get 'retailers/new' do
+    if logged_in?
+      erb :'/retailers/new'
+    else
+      erb :'users/login'
+    end
   end
 
-  #new
-  get '/retailers/new' do
-     error_message
-    erb :'/retailers/new'
-  end
-
-  #create retailer
   post '/retailers' do
-    error_message
-    @retailers = current_user.retailers.create(:name => params[:name], :boxes => params[:boxes])
-    redirect to '/retailers/#{@retailers.id}'
+    if params.value.any? {|value| value == ""} 
+      erb :'retailers/new'
+    else
+      user = User.find(session[:user_id])
+      @retailer = Retailer.create(name: params[:name], boxes: params[:boxes], user_id: user.id)
+    redirect to "retailer/#{@retailer.id}"
+    end
   end
 
-  #show
   get '/retailers/:id' do
-    error_message
-    @retailers = Retailer.find_by_id(params[:id])
-    erb :'/retailers/show'
+    if logged_in?
+      @retailer = Retailer.find(params[:id])
+      erb :'/retailers/show'
+    else
+      erb :'users/login'
+    end
   end
 
-  #load edit form
   get '/retailers/:id/edit' do
-    error_message
-    @retailers = Retailer.find_by_id(params[:id])
-    erb :'/retailers/edit'
+    if logged_in?
+      @retailer = Retailer.find(params[:id])
+      if @retailer.user_id == session[:user_id]
+       erb :'/retailers/edit'
+      else
+        erb :'retailers'  
+      end
+    else
+      erb :'users/login'
+    end
   end
 
-  #edit action
   patch '/retailers/:id' do
-    error_message
-    @retailers = Retailer.find_by_id(params[:id])
-    @retailers.name = params[:name]
-    @retailers.boxes = params[:boxes]
-    @retailers.user_id = params[:user_id]
-    @retailers.save
-    redirect to '/retailers/#{@retailers.id}'
+    if params.values.any? {|value| value == ""}
+      @retailer = Retailer.find(params[:id])
+      erb :'retailers/edit'
+      redirect to "/retailers/#{params[id]/edit}"
+    else
+      @retailer = Retailer.find(params[:id])
+      @retailer.name = params[:name]
+      @retailer.boxes = params[:boxes]
+      @retailer.save
+      redirect to "/retailers/#{@retailer.id}"
+    end
   end
 
-  #delete
-  delete '/retailers/:id' do
-    error_message
-    @retailers = Retailer.find_by_id(params[:id])
-    @retailers.delete
-    redirect to '/retailers'
+  delete '/retailers/:id/delete' do
+    @retailer = Retailer.find(params[:id])
+    if session[:user_id]
+      @retailer = Retailer.find(params[:id])
+      if retailer.user_id == session[:user_id] 
+        @retailer.delete
+        redirect to '/retailers'
+      else
+        redirect to '/retailers'  
+      end
+    else
+      redirect to '/login'
+    end
   end
 end

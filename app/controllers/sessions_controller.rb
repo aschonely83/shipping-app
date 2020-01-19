@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
     erb :'/users/login'
   end
     
-  post '/login do'
+  post '/login' do
     users = User.find_by(email: params[:email])
     if users.authenticate(params[:password]) 
       session[:user_id] = users.id
