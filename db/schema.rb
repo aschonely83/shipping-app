@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 20200112190219) do
   create_table "retailers", force: :cascade do |t|
     t.string  "name"
     t.integer "boxes"
+    t.integer "user_id"
   end
 
   create_table "users", force: :cascade do |t|

@@ -1,46 +1,80 @@
 class RetailersController < ApplicationController
   
   get '/retailers' do
-    @retailers = Retailer.all 
-    erb :'/retailers/index'
+    if logged_in?  
+      @retailers = Retailer.all 
+      erb :'/retailers/index'
+    else
+      erb :'users/login'
+    end
   end
-
+   
   get 'retailers/new' do
+    if logged_in?
       erb :'/retailers/new'
+    else
+      erb :'users/login'
+    end
   end
 
   post '/retailers' do
-    @retailer = Retailer.create(params[:retailer])
-
-    if !params["user"]["name"].empty?
-      @retailer.user = User.create(name: params["user"]["name"])    
-    end
-
-    retailer.save
-
+    if params.value.any? {|value| value == ""} 
+      erb :'retailers/new'
+    else
+      user = User.find(session[:user_id])
+      @retailer = Retailer.create(name: params[:name], boxes: params[:boxes], user_id: user.id)
     redirect to "retailer/#{@retailer.id}"
+    end
   end
 
   get '/retailers/:id' do
-    @retailer = Retailer.find(params[:id])
-    erb :'/retailers/show'
+    if logged_in?
+      @retailer = Retailer.find(params[:id])
+      erb :'/retailers/show'
+    else
+      erb :'users/login'
+    end
   end
 
   get '/retailers/:id/edit' do
-    @retailer = Retailer.find(params[:id])
-    erb :'/retailers/edit'
+    if logged_in?
+      @retailer = Retailer.find(params[:id])
+      if @retailer.user_id == session[:user_id]
+       erb :'/retailers/edit'
+      else
+        erb :'retailers'  
+      end
+    else
+      erb :'users/login'
+    end
   end
 
   patch '/retailers/:id' do
-    @retailer = Retailer.find(params[:id])
-    @retailer.update(params[:retailer])
-
-    if !params["user"]["name"].empty?
-      @retailer.user = User.create(name: params["user"]["name"])    
+    if params.values.any? {|value| value == ""}
+      @retailer = Retailer.find(params[:id])
+      erb :'retailers/edit'
+      redirect to "/retailers/#{params[id]/edit}"
+    else
+      @retailer = Retailer.find(params[:id])
+      @retailer.name = params[:name]
+      @retailer.boxes = params[:boxes]
+      @retailer.save
+      redirect to "/retailers/#{@retailer.id}"
     end
+  end
 
-    retailer.save
-
-    redirect to "retailers/#{@retailer.id}"
+  delete '/retailers/:id/delete' do
+    @retailer = Retailer.find(params[:id])
+    if session[:user_id]
+      @retailer = Retailer.find(params[:id])
+      if retailer.user_id == session[:user_id] 
+        @retailer.delete
+        redirect to '/retailers'
+      else
+        redirect to '/retailers'  
+      end
+    else
+      redirect to '/login'
+    end
   end
 end

@@ -1,42 +1,48 @@
 class UsersController < ApplicationController
  
-  get '/users' do
-    @users = User.all
-    erb :'/users/index'
-  end
-
-  get '/users/new' do
-    @retailers = Retailer.all
-    erb :'/users/new'
-  end
-
-  post '/users' do
-    @user = User.create(params[:user])
-    if !params["retailer"]["name"].empty?
-      @user.retailer << Retailer.create(name: params[:retailer][:name])
+  get '/signup' do
+    if !logged_in?
+      erb :'users/signup'
+    else
+      redirect to '/retailers'
     end
-    redirect "/users/#{@user.id}"  
+  end  
+
+  post '/signup' do
+    if params.values.any? {|value| value == ""}
+      erb :'/users/signup'
+    else
+      @user = User.new(email: params[:email], password: params[:password])
+      @user.save
+      session[:user_id] = @user.id
+      redirect to '/retailers'
+    end 
   end
 
-  get '/users/:id/edit' do
-    @user = User.find(params[:id])
-    @retailer = Retailer.all
-    erb :'/users/edit'
-  end
-
-  get '/users/:id' do
-    @user = User.find(params[:id])
-    erb :'/users/show'
-  end
-
-  patch '/users/:id' do
-    @user = User.find(params[:id])
-    @user.update(params[:user])
-
-    if !params["retailer"]["name"].empty?
-      @user.retailers << Retailer.create(name: params["retailer"]["name"])
+  get '/login' do
+    if !logged_in?
+      erb :'/users/login'
+    else
+      redirect to '/retailers'     
     end
+  end
 
-    redirect "/users/#{@user.id}"
+  post '/login' do
+    user = User.find_by(:email => params[:email])
+    if user && user.authenticate(params[:password])
+      session[:user_id] = user_id
+      redirect to '/retailers'
+    else
+      erb :'/users/login'    
+    end
+  end
+
+  get '/logout' do
+    if session[:user_id] != nil
+      session.destroy
+      redirect to '/'
+    else
+      redirect to '/retailers'
+    end      
   end
 end

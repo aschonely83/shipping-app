@@ -19,9 +19,3 @@ group :test do
   gem 'database_cleaner', git: 'https://github.com/bmabey/database_cleaner.git'
 end
 
-group :development do
-    gem 'shotgun'
-    gem 'pry'
-    gem 'tux'
-    gem 'sqlite3', '~> 1.3.6'
-end
