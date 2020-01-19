@@ -24,7 +24,7 @@ class RetailersController < ApplicationController
   #show
   get '/retailers/:id' do
     error_message
-    @retailers = Retailer.find(params[:id])
+    @retailers = Retailer.find_by(params[:id])
     erb :'/retailers/show.'
   end
 
@@ -54,7 +54,7 @@ class RetailersController < ApplicationController
     @retailers = Retailer.find(params[:id])
     redirect '/retailers' unless @retailers
     if @retailers.destroy
-      redirect '/retailers
-    end
+      redirect '/retailers'
+    end  
   end
 end
