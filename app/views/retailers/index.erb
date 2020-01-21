@@ -1,5 +1,8 @@
-  <h1>All Retailers</h1>
-    <% @retailers.each do |retailer| %>
-      <h2><a href="/retailers/<%= @retailers.name %>"><%= @retailers.boxes %></a></h2>
-    <% end %>
-<button><a href="/retailers/new">Create A New Retailer</a></button>
+  <h1>Retailers</h1>
+    
+  <% @retailers.each do |retailer| %>
+      <h2><a href="/retailers/<% retailer.id %>"><% retailer.name %></a></h2>
+      <p><% retailer.boxes %></p>
+  <% end %>
+
+  <button><a href="/retailers/new">Create A New Retailer</a></button>
