@@ -1,1 +1,8 @@
-<h1><% @retailer.name %></h1>
+<h1>Name:<% @retailers.name %></h1>
+<h3>Boxes:<% @retailers.boxes %></h3>
+
+
+<form method="POST" action="/retailers/<%=@retailers.id%>">
+  <input type="hidden" name="_method" value="DELETE" />
+  <input type="submit" value="delete" />
+</form>

@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
     users = User.find_by(email: params[:email])
     if users.authenticate(params[:password]) 
       session[:user_id] = users.id
-      redirect '/retailers'
+      redirect '/retailers/new'
     else
       flash[:error] = 'Incorrect email or password.  Please sign up or login'
         redirect '/login'

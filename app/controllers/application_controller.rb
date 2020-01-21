@@ -10,6 +10,10 @@ class ApplicationController < Sinatra::Base
   get '/' do
     erb :welcome
   end
+
+  post '/retailers' do
+    erb :'/retailers/show'
+  end
   
   helpers do
     def current_user
