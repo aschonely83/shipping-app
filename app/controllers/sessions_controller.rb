@@ -10,8 +10,7 @@ class SessionsController < ApplicationController
       session[:user_id] = users.id
       redirect '/retailers/new'
     else
-      flash[:error] = 'Incorrect email or password.  Please sign up or login'
-        redirect '/login'
+      redirect '/login'
     end
   end
 

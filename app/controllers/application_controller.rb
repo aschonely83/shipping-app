@@ -4,15 +4,11 @@ class ApplicationController < Sinatra::Base
   register Sinatra::ActiveRecordExtension
   set :session_secret, "shipping_tracker_secret"
   set :views, Proc.new { File.join(root, "../views/") }
-  register Sinatra::Flash
+  
 
 
   get '/' do
     erb :welcome
-  end
-
-  post '/retailers' do
-    erb :'/retailers/show'
   end
   
   helpers do
@@ -22,13 +18,6 @@ class ApplicationController < Sinatra::Base
     
     def logged_in?
       !!current_user
-    end
-
-    def redirect_if_not_logged_in
-      unless logged_in?
-        flash[:notice] = "You are not logged in, Please log in."
-        redirect "/login"
-     end
     end
   end
 end

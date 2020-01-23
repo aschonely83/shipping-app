@@ -1,14 +1,13 @@
-  <% if @retailers == nil %>
   <h3>Retailers</h3>
-  <% else %>
-    <h4>Current Retailers</h4>
-    <ul>
-      <% @retailers.each do |retailer| %>
+ 
+  <h4>Current Retailers</h4>
+    
+    <% @retailers.each do |retailer| %>
       <h5><a href="/retailers/<% @retailers.ids %>">
-        <% @retailers.name %>
-        <% @retailers.boxes %>
-        <% @retailers.user_id% ></a></h5>
-        <br>
-        <% end %>
-   </ul>
+      <% @retailers.name %>
+      <% @retailers.boxes %>
+      <% @retailers.user_id% ></a></h5>
+      <br>
+    <% end %>
+  
   <button><a href="/retailers/new">Create A New Retailer</a></button>
