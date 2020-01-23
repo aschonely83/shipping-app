@@ -1,6 +1,6 @@
 <h1>Edit Retailers</h1>
 
-<form action="/retailers/<%= @retailers.id %>" method="post">
+<form method="post" action="/retailers/<%= @retailers.id %>">
   <input id="hidden" type="hidden" name="_method" value="patch" />
   
   <label for="name">Name</label>
@@ -8,6 +8,9 @@
   
   <label for="boxes"></label>
   <input type="text" name="boxes" value="<%=retailers.boxes"/>
+
+  <label for="user_id"></label>
+  <input type="text" name="user_id" value="<%=retailers.user_id" />
   
   <input type="submit" value="submit" />
 </form>

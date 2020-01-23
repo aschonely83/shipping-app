@@ -1,5 +1,7 @@
-<h1>Name:<% @retailers.name %></h1>
-<h3>Boxes:<% @retailers.boxes %></h3>
+<h2><%= @retailers.name %></h2>
+<h3><%= @retailers.boxes %></h3>
+<h3><%= @retailers.user_id%></h3>
+<h5><a href="/retailers/<%= @retailers.id %>/edit">Edit Retailer</a></h5>
 
 
 <form method="POST" action="/retailers/<%=@retailers.id%>">
