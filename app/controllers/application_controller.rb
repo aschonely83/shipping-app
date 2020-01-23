@@ -1,23 +1,28 @@
 require './config/environment'
 
 class ApplicationController < Sinatra::Base
-  register Sinatra::ActiveRecordExtension
-  set :session_secret, "shipping_tracker_secret"
-  set :views, Proc.new { File.join(root, "../views/") }
-  
-
-
-  get '/' do
-    erb :welcome
+  configure do
+    set :public_folder, 'public'
+    set :views, 'app/views'
+    enable :sessions
+    set :session_secret, "shippingapp"
   end
-  
+
+
+  get '/' do 
+    erb '/'
+  end
+
   helpers do
-    def current_user
-      User.find_by(session[:user_id])
-    end
-    
+  
     def logged_in?
-      !!current_user
+      !!session[:user_id]
     end
+
+    def current_user
+      User.find(session[:user_id])
+    end
+
   end
+
 end
