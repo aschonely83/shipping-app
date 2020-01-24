@@ -4,13 +4,13 @@
   <input id="hidden" type="hidden" name="_method" value="patch" />
   
   <label for="name">Name</label>
-  <input type="text" name="name" value="<%=retailers.name%>" />
+  <input type="text" name="name" value="<%= @retailers.name%>" />
   
   <label for="boxes"></label>
-  <input type="text" name="boxes" value="<%=retailers.boxes"/>
+  <input type="text" name="boxes" value="<%= @retailers.boxes"/>
 
   <label for="user_id"></label>
-  <input type="text" name="user_id" value="<%=retailers.user_id" />
+  <input type="text" name="user_id" value="<%= @retailers.user_id" />
   
   <input type="submit" value="submit" />
 </form>

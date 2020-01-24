@@ -1,13 +1,13 @@
   <h3>Retailers</h3>
  
   <h4>Current Retailers</h4>
-    
+    <ul>
     <% @retailers.each do |retailer| %>
-      <h5><a href="/retailers/<% @retailers.ids %>">
-      <% @retailers.name %>
-      <% @retailers.boxes %>
-      <% @retailers.user_id% ></a></h5>
+      <h5><a href="/retailers/<%= retailer.id %>"> 
+      <%= retailer.name %>
+      <%= retailer.boxes %>
+      <%= retailer.user_id %></a></h5>
       <br>
     <% end %>
-  
+    </ul>
   <button><a href="/retailers/new">Create A New Retailer</a></button>

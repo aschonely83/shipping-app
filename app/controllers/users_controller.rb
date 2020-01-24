@@ -5,8 +5,8 @@ class UsersController < ApplicationController
       redirect '/retailers'
     end
 
-    @user = User.find(params[:id])
-    if !@user.nil? && @user == current_user
+    @users = User.find(params[:id])
+    if !@users.nil? && @users == current_user
       erb :'users/show'
     else
       redirect '/retailers'
@@ -25,8 +25,8 @@ class UsersController < ApplicationController
     if params[:email] == "" || params[:password] == ""
       redirect to '/signup'
     else
-      @user = User.create(:email => params[:email], :password => params[:password])
-      session[:user_id] = @user.id
+      @users = User.create(:email => params[:email], :password => params[:password])
+      session[:user_id] = @users.id
       redirect '/retailers'
     end
   end
@@ -40,9 +40,9 @@ class UsersController < ApplicationController
   end
 
   post '/login' do
-    user = User.find_by(:email => params[:email])
-    if user && user.authenticate(params[:password])
-      session[:user_id] = user.id
+    users = User.find_by(:email => params[:email])
+    if users && user.authenticate(params[:password])
+      session[:user_id] = users.id
       redirect "/retailers"
     else
       redirect to '/signup'
@@ -57,3 +57,4 @@ class UsersController < ApplicationController
       redirect to '/'
     end
   end
+end  
