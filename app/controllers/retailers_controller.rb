@@ -2,12 +2,12 @@ class RetailersController < ApplicationController
  
   
   get "/retailers" do
-    @retailers = Retailer.all
+    @retailers = current_user.retailers
     erb :"retailers/index"
   end
 
   post "/retailers" do
-   @retailers = Retailer.create(params)
+   @retailers = current_user.retailers.create(params)
     redirect "/retailers/#{@retailers[:id]}"
   end
 
