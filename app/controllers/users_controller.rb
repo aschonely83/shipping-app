@@ -15,7 +15,7 @@ class UsersController < ApplicationController
 
   get '/signup' do
     if !session[:user_id]
-      erb :'users/new'
+      erb :'users/signup'
     else
       redirect to '/retailers'
     end
@@ -41,7 +41,7 @@ class UsersController < ApplicationController
 
   post '/login' do
     users = User.find_by(:email => params[:email])
-    if users && user.authenticate(params[:password])
+    if users && users.authenticate(params[:password])
       session[:user_id] = users.id
       redirect "/retailers"
     else
