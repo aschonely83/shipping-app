@@ -30,15 +30,15 @@ class RetailersController < ApplicationController
   end
 
   #PATCH: /retailers/5
-  patch "/retailers/:id" do
-    @retailers = Retailer.find_by_id(params[:id])
-    redirect "/retailers" unless @retailers
-    if @retailers.update(name: params[:name],boxes: params[:boxes],user_id: params[:user_id])
-    redirect "/retailers/#{@retailers[:id]}"
+  patch '/retailers/:id' do 
+    @retailers = Retailer.find(params[:id])
+      if !params[:name].empty? && !params[:boxes].empty? 
+        @retailers.update(name: params[:name],boxes: params[:boxes],user_id: params[:user_id])
+        redirect '/retailers'
     else
-      erb :"/retailers/edit"
+      erb :'/retailers/edit'
     end
-  end
+end
 
   #DELETE: /retailers/5
   delete "/retailers/:id" do
