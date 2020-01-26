@@ -38,7 +38,7 @@ class RetailersController < ApplicationController
     else
       erb :'/retailers/edit'
     end
-end
+  end
 
   #DELETE: /retailers/5
   delete "/retailers/:id" do
