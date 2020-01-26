@@ -1,39 +1,46 @@
 class RetailersController < ApplicationController
  
-  
+  #index
   get "/retailers" do
     @retailers = current_user.retailers
     erb :"retailers/index"
   end
 
+  #create 
   post "/retailers" do
    @retailers = current_user.retailers.create(params)
     redirect "/retailers/#{@retailers[:id]}"
   end
 
+  #new
   get "/retailers/new" do
     erb :"retailers/new"
   end
 
+  #show
   get "/retailers/:id" do
     @retailers = Retailer.find(params[:id])
     erb :"retailers/show"
   end
 
+  #edit
   get "/retailers/:id/edit" do
     @retailers = Retailer.find(params[:id])
     erb :"retailers/edit"
   end
 
+  #PATCH: /retailers/5
   patch "/retailers/:id" do
-    @retailers = Retailer.find(params[:id])
-    @retailers.name = params[:name]
-    @retailers.boxes = params[:boxes]
-    @retailers.user_id = params[:user_id]
-    @retailers.save
-    redirect to "/retailers/#{@retailers.id}"
+    @retailers = Retailer.find_by_id(params[:id])
+    redirect "/retailers" unless @retailers
+    if @retailers.update(name: params[:name],boxes: params[:boxes],user_id: params[:user_id])
+    redirect "/retailers/#{@retailers[:id]}"
+    else
+      erb :"/retailers/edit"
+    end
   end
 
+  #DELETE: /retailers/5
   delete "/retailers/:id" do
     @retailers = Retailer.find(params[:id])
     @retailers.delete
