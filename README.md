@@ -6,4 +6,4 @@ All you need to do is sign up with an email and password, then you are ready to 
 
 Thanks for checking it out! I hope you will find it useful.
 
-Usage To use this app, just clone, run rake db:migrate and then run shotgun. Everything should be set up.
+To use this app, bundle install and then run shotgun. 
