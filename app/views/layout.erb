@@ -13,10 +13,29 @@
 
     <link rel="stylesheet" href="/stylesheets/main.css" />
 
+    
   </head>
   <body>
     <div class="wrapper">
-
+      
+    
+    <div class="topnav">
+      <span><a class="active" href="/">Home</a></span>
+        <% if logged_in? %>
+          <span><a href="/retailers/new">Create Retailer</a></<span>
+          <span ><a href="/retailers/edit">Edit Retailer</a></span>
+          <span ><a href="/retailers/delete">Delete Retailer</a></span>
+          <span ><a href="/logout">Log Out</a></span>
+        <% else %>
+          <span ><a href="/signup">Sign Up</a></span>
+          <span><a href="/logout">Logout</a></span>
+        <% end %>  
+    </div>
+      
+        
+        
+        
+        
         <%= yield %>
 
       <footer class="branding">

@@ -32,6 +32,7 @@ class RetailersController < ApplicationController
   #PATCH: /retailers/5
   patch '/retailers/:id' do 
     @retailers = Retailer.find(params[:id])
+    #current_user.id == @retailers.user.id
       if !params[:name].empty? && !params[:boxes].empty? 
         @retailers.update(name: params[:name],boxes: params[:boxes],user_id: params[:user_id])
         redirect '/retailers'
