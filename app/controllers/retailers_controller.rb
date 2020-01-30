@@ -4,20 +4,20 @@ class RetailersController < ApplicationController
   get "/retailers" do
     redirect_if_not_logged_in
     @retailers = current_user.retailers
-    erb :"retailers/index"
+    erb :"/retailers/index"
   end
 
   #create 
   post "/retailers" do
     redirect_if_not_logged_in
-   @retailers = current_user.retailers.create(name: params[:name], boxes: params[:boxes])
+    @retailers = current_user.retailers.create(name: params[:name], boxes: params[:boxes])
     redirect "/retailers/#{@retailers[:id]}"
   end
 
   #new
   get "/retailers/new" do
     redirect_if_not_logged_in
-    erb :"retailers/new"
+    erb :"/retailers/new"
   end
 
   #show
@@ -38,20 +38,21 @@ class RetailersController < ApplicationController
   patch '/retailers/:id' do
     redirect_if_not_logged_in
     @retailers = Retailer.find_by_id(params[:id])
-    #current_user.id == @retailers.user.id
-      if !params[:name].empty? && !params[:boxes].empty? 
-        @retailers.update(name: params[:name],boxes: params[:boxes],user_id: params[:user_id])
-        redirect '/retailers'
+    redirect "/retailers" unless @retailers
+    if @retailers.update(name: params[:name],boxes: params[:boxes])
+       redirect '/retailers/#{@retailers[:id]}'
     else
       erb :'/retailers/edit'
     end
   end
 
   #DELETE: /retailers/5
-  delete "/retailers/:id" do
+  delete "/retailers/:id/delete" do
     redirect_if_not_logged_in
     @retailers = Retailer.find_by_id(params[:id])
-    @retailers.delete
-    redirect to "/retailers"
-  end
+    redirect '/retailers' unless @retailers
+    if @retailers.destroy
+      redirect to "/retailers"
+    end
+  end  
 end
