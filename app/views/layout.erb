@@ -20,16 +20,9 @@
       
     
     <div class="topnav">
-      <span><a class="active" href="/retailers">View Retailers</a></span>
-        <% if logged_in? && current_user.id %>
-          <span><a href="/retailers/new">Create Retailer</a></<span>
-          <span ><a href="/retailers/:id/edit">Edit Retailer</a></span>
-          <span ><a href="/retailers/:id/delete">Delete Retailer</a></span>
-          <span ><a href="/logout">Log Out</a></span>
-        <% else %>
-          <span ><a href="/signup">Sign Up</a></span>
-          <span><a href="/logout">Logout</a></span>
-        <% end %>  
+      <span><a class="active" href="/retailers">Retailers</a></span>
+      <span><a class="active" href="/">Home</span> 
+      <span ><a href="/logout">Log Out</a></span>
     </div>
       
         

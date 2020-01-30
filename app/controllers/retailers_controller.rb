@@ -2,43 +2,50 @@ class RetailersController < ApplicationController
  
   #index
   get "/retailers" do
-    redirect_if_not_logged_in
-    @retailers = current_user.retailers
-    erb :"/retailers/index"
-  end
+    if logged_in?
+      @retailers = current_user.retailers
+      erb :"/retailers/index"
+    else
+      redirect '/login'
+    end
+  end  
+
 
   #create 
   post "/retailers" do
-    redirect_if_not_logged_in
-    @retailers = current_user.retailers.create(name: params[:name], boxes: params[:boxes])
-    redirect "/retailers/#{@retailers[:id]}"
-  end
+    @retailers = current_user.retailers.create(params)
+     redirect "/retailers/#{@retailers[:id]}"
+   end
 
   #new
   get "/retailers/new" do
-    redirect_if_not_logged_in
-    erb :"/retailers/new"
+    if logged_in?
+      erb :"/retailers/new"
+    else
+      redirect '/login'
+    end      
   end
 
   #show
   get "/retailers/:id" do
-    redirect_if_not_logged_in
     @retailers = Retailer.find_by_id(params[:id])
-    erb :"/retailers/show"
+    erb :"retailers/show"
   end
 
   #edit
   get "/retailers/:id/edit" do
-    redirect_if_not_logged_in
-    @retailers = Retailer.find_by_id(params[:id])
-    erb :"/retailers/edit"
+    if logged_in? 
+      @retailers = Retailer.find_by_id(params[:id])
+      erb :"/retailers/edit"
+    else
+      '/login'
+    end  
   end
 
   #PATCH: /retailers/5
   patch '/retailers/:id' do
-    redirect_if_not_logged_in
     @retailers = Retailer.find_by_id(params[:id])
-    redirect "/retailers" unless @retailers
+    redirect "/retailers" unless @ret if @retailers.users && session[:user_id] == @retailers.users.idailers
     if @retailers.update(name: params[:name],boxes: params[:boxes])
        redirect '/retailers/#{@retailers[:id]}'
     else
@@ -48,11 +55,12 @@ class RetailersController < ApplicationController
 
   #DELETE: /retailers/5
   delete "/retailers/:id/delete" do
-    redirect_if_not_logged_in
-    @retailers = Retailer.find_by_id(params[:id])
-    redirect '/retailers' unless @retailers
-    if @retailers.destroy
-      redirect to "/retailers"
+    if logged_in
+      @retailers = Retailer.find(params[:id])
+      @retailers.destroy
+      redirect "/retailers"
+    else
+      redirect 'login'
     end
-  end  
+  end
 end

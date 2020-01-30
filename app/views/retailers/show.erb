@@ -1,15 +1,12 @@
-<h2>Name: <%= @retailers.name %></h2>
+<h3>Name: <%= @retailers.name %></h3>
 <h3>Boxes: <%= @retailers.boxes %></h3>
 
 
-
 <h5><a href="/retailers">View All Retailers</a></h5>
+<h5><a href="/retailers/<%= @retailers.id %>/edit">Edit Retailer</a></h5>
 
+<form method="POST" action="/retailers/<%=@retailers.id%>">
+<input type="hidden" name="_method" value="DELETE" />
+<input type="submit" value="Delete" />
+</form>
 
-<% if logged_in? %>
-  <h5><a href="/retailers/<%= @retailers.id %>/edit">Edit Retailer</a></h5>
-  <form method="POST" action="/retailers/<%=@retailers.id%>/delete">
-    <input type="hidden" name="_method" value="DELETE" />
-    <input type="submit" value="Delete" />
-  </form>
-<% end %>  

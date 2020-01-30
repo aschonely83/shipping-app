@@ -1,12 +1,12 @@
-  <h3>Retailers</h3>
+    <h3>Retailers</h3>
  
   <h4>Current Retailers</h4>
     <ul>
     <% @retailers.each do |retailer| %>
       <h5><a href="/retailers/<%= retailer.id %>"> 
-      <%= retailer.name %>
-      <%= retailer.boxes %>
-     
+      <%= retailer.name %> <%= retailer.boxes %>
+      
+      
       <br>
     <% end %>
     </ul>
