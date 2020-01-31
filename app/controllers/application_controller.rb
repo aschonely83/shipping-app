@@ -6,16 +6,11 @@ class ApplicationController < Sinatra::Base
     set :views, 'app/views'
     enable :sessions
     set :session_secret, "shippingapp"
-    register Sinatra::Validation
+     
   end
 
 
-  get '/' do
-    validates do
-      params do
-        required("email").filled(:str?)
-        required("password").filled(:str?)
-      end
+  get '/' do 
     erb :welcome
   end
 

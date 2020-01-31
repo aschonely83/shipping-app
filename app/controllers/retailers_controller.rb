@@ -13,9 +13,13 @@ class RetailersController < ApplicationController
 
   #create 
   post "/retailers" do
-    @retailers = current_user.retailers.create(params)
-     redirect "/retailers/#{@retailers[:id]}"
-   end
+    if logged_in?
+      @retailers = current_user.retailers.create(params)
+      redirect "/retailers/#{@retailers[:id]}"
+    else
+      redirect '/retailers/index'
+    end  
+  end
 
   #new
   get "/retailers/new" do
@@ -28,24 +32,31 @@ class RetailersController < ApplicationController
 
   #show
   get "/retailers/:id" do
-    @retailers = Retailer.find_by_id(params[:id])
-    erb :"retailers/show"
+    if @retailers = Retailer.find_by_id(params[:id])
+      erb :"/retailers/show"
+    else
+      redirect "/retailers"
+    end  
   end
 
   #edit
   get "/retailers/:id/edit" do
     if logged_in? 
-      @retailers = Retailer.find_by_id(params[:id])
-      erb :"/retailers/edit"
+      @retailer = Retailer.find_by_id(params[:id])
+      if current_user == @retailer.user
+        erb :"/retailers/edit"
+      else
+        redirect '/login'  
+      end  
     else
-      '/login'
+      redirect '/login'
     end  
   end
 
   #PATCH: /retailers/5
   patch '/retailers/:id' do
     @retailers = Retailer.find_by_id(params[:id])
-    redirect "/retailers" unless @ret if @retailers.users && session[:user_id] == @retailers.users.idailers
+    redirect "/retailers" unless @retailers 
     if @retailers.update(name: params[:name],boxes: params[:boxes])
        redirect '/retailers/#{@retailers[:id]}'
     else
@@ -54,13 +65,18 @@ class RetailersController < ApplicationController
   end
 
   #DELETE: /retailers/5
-  delete "/retailers/:id/delete" do
-    if logged_in
-      @retailers = Retailer.find(params[:id])
-      @retailers.destroy
-      redirect "/retailers"
+  delete "/retailers/:id" do
+    if logged_in?
+      @retailer = Retailer.find(params[:id])
+      if current_user == @retailer.user
+        @retailer.destroy
+        redirect "/retailers"
+      else
+        redirect '/login'
+      end    
     else
-      redirect 'login'
+      redirect '/login'
     end
   end
 end
+

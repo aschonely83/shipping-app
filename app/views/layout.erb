@@ -20,9 +20,16 @@
       
     
     <div class="topnav">
-      <span><a class="active" href="/retailers">Retailers</a></span>
-      <span><a class="active" href="/">Home</span> 
-      <span ><a href="/logout">Log Out</a></span>
+      <% if logged_in?%>
+
+        <span><a href="/retailers">Retailers</a></span>
+        <span><a href="/">Home</span>
+        <span ><a href="/logout">Log Out</a></span>
+
+      <% else %>
+        <span ><a href="/signup">Sign Up</a></span>
+        <span ><a href="/login">Log In</a></span>
+      <% end %>  
     </div>
       
         

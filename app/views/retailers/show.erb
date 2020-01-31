@@ -3,8 +3,10 @@
 
 
 <h5><a href="/retailers">View All Retailers</a></h5>
-<h5><a href="/retailers/<%= @retailers.id %>/edit">Edit Retailer</a></h5>
 
+<% if @retailers == nil %>
+  <h5><a href="/retailers/<%= @retailers.id %>/edit">Edit Retailer</a></h5>
+<% end %>
 <form method="POST" action="/retailers/<%=@retailers.id%>">
 <input type="hidden" name="_method" value="DELETE" />
 <input type="submit" value="Delete" />
